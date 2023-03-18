@@ -4,23 +4,15 @@ import SearchPage from './pages/SearchPage';
 import Navbar from './components/Navbar';
 import ReactQueries from './pages/ReactQueries';
 function App() {
-
   return (
     <>
-
-      {/* Navbar  */}
-      <Navbar />
-
-      {/* Routes */}
       <Routes>
         <Route path="/" index element={<LandingPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="*" element={<Navigate to="/" />} />
-
       </Routes>
-
     </>
-  )
+  );
 }
 
 export default App;

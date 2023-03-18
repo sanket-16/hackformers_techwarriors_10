@@ -1,11 +1,11 @@
+import Wrapper from '@hoc/Wrapper';
 
 const LandingPage = () => {
-    return (
-        <>
-            <h1 className=" text-5xl text-center ">Landing Page</h1>
+  return (
+    <>
+      <h1 className=" text-5xl text-center ">Landing Page</h1>
+    </>
+  );
+};
 
-        </>
-    )
-}
-
-export default LandingPage
+export default Wrapper(LandingPage);

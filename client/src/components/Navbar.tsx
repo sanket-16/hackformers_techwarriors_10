@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 
 const Navbar = () => {
   return (
     <div>
-      
-      <div>Uni<span>Link</span></div>
+      <div className="text-xl">
+        Uni<span>Link</span>
+      </div>
       <div></div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
