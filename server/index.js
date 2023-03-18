@@ -5,8 +5,8 @@ const path = require('passport');
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
-const cookieSession = require("cookie-session");
-const passportSetup = require("./passport")
+const cookieSession = require('cookie-session');
+const passportSetup = require('./passport');
 
 const app = express();
 app.use(express.json());
@@ -31,22 +31,22 @@ mongoose
 // );
 
 app.use(
-	cookieSession({
-		name: "session",
-		keys: ["cyberwolve"],
-		maxAge: 24 * 60 * 60 * 100,
-	})
+  cookieSession({
+    name: 'session',
+    keys: ['cyberwolve'],
+    maxAge: 24 * 60 * 60 * 100,
+  })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(
-	cors({
-		origin: "http://127.0.0.1:5173",
-		hods: "GET,POST,PUT,DELETE",
-		credentials: true,
-	})
+  cors({
+    origin: 'http://localhost:5173',
+    hods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  })
 );
 
 app.use('/', require('./src/routes/userRoutes'));
