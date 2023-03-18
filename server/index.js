@@ -43,8 +43,8 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
-    hods: 'GET,POST,PUT,DELETE',
+    // origin: 'http://localhost:5173',
+    // hods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
 );
