@@ -6,7 +6,11 @@ const passport = require('passport');
 const MongoStore = require('connect-mongo')
 const session = require('express-session')
 
+
 const app = express();
+app.use(express.json());
+
+
 
 require("dotenv").config();
 //passport config
@@ -22,10 +26,14 @@ app.use(session({
     store: MongoStore.create({mongoUrl: process.env.MONGO_URL,}),
   }))
 
+
+       
 app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/', require('./src/routes/userRoutes'))
+
+app.use('/', require('./src/routes/profileRoutes'))
 
 
 app.listen(process.env.PORT, () => console.log("serever is running at 8080"));
