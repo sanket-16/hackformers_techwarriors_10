@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import react from '../assets/react.svg';
+
 const Navbar = () => {
   const [isLogedIn, setIsLogedIn] = useState(true);
 
@@ -14,7 +15,7 @@ const Navbar = () => {
           <button
             className=" flex items-center gap-2 bg-blue rounded-md px-4 py-2"
             onClick={() => {
-              window.open('http://localhost:8080/google', '_self');
+              window.open('http://localhost:8080/auth/google', '_self');
             }}
           >
             {isLogedIn ? (
