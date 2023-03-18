@@ -16,3 +16,5 @@ const profileSchema = new mongoose.Schema({
     counts:Number
 },
 {timestamps:true})
+
+module.exports = mongoose.model("Profile",profileSchema);
