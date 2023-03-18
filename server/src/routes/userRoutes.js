@@ -6,12 +6,35 @@ const passport = require('passport')
     res.send("<h1>I am Inevitable</h1>")
 })
 
- router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
+ router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
 
- router.get('/auth/google/callback',passport.authenticate('google', {failureRedirect: "/"}),
-(req, res)=>{
-    res.redirect('/')
-})
+//  router.get('/google/callback',passport.authenticate('google', {failureRedirect: "/"}),
+// (req, res)=>{
+    
+//     res.redirect('/')
+// })
+
+router.get('/google/callback',
+  (req,res,next)=>{
+    passport.authenticate('google', { failureRedirect: '/auth/google/error' }, async (error, user , info) => {
+      if (error){
+        return res.send({ message:error.message });
+      }
+      if (user){
+        try {
+          //let result = await socialLogin(user.email); 
+          // here your business logic for login user.
+          return res.send({
+            user,
+            message:'Login Successful' 
+          });
+        } catch (error) {
+          return res.send({ message: error.message });
+        }
+      }
+    })(req,res,next);
+  }); 
+
 
 router.get('/logout', (req, res, next) => {
     req.logout((error)=>{
