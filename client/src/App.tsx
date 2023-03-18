@@ -4,6 +4,7 @@ import SearchPage from './pages/SearchPage';
 import Navbar from './components/Navbar';
 import ReactQueries from './pages/ReactQueries';
 import UserProfilePage from '@pages/UserProfilePage';
+import SetUpProfile from '@pages/SetUpProfile';
 function App() {
   return (
     <>
@@ -12,6 +13,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/user" element={ <UserProfilePage/>} />
+        <Route path="/updateprofile" element={ <SetUpProfile/>} />
       </Routes>
     </>
   );
