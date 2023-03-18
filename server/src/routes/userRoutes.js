@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
     res.send("<h1>I am Inevitable</h1>")
 })
 
-router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
+router.get("/auth/google", passport.authenticate("google", ["profile", "email"]));
 
 //  router.get('/google/callback',passport.authenticate('google', {failureRedirect: "/"}),
 // (req, res)=>{
@@ -34,20 +34,46 @@ router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
 //     })(req,res,next);
 //   }); 
 
-router.get('/google/callback', passport.authenticate("google", { failureRedirect: "/" }), 
-    function (req, res) { 
-        // res.redirect('https://stackoverflow.com/questions/48376640/can-i-use-res-redirect-and-res-send-simultaneously-in-node-js', )
-        res.status(201).json({user: req.user})
-        console.log(req.user)
+// router.get('/google/callback', passport.authenticate("google", { failureRedirect: "/" }), 
+//     function (req, res) { 
+//         res.redirect('/')
+//         res.status(201).json({user: req.user})
+//         console.log(req.user)
+//      })
 
-     })
+router.get("/login/success", (req, res) => {
+	if (req.user) {
+		res.status(200).json({
+			error: false,
+			message: "Successfully Loged In",
+			user: req.user,
+		});
+	} else {
+		res.status(403).json({ error: true, message: "Not Authorized" });
+	}
+});
+
+router.get(
+	"/auth/google/callback",
+	passport.authenticate("google", {
+		successRedirect: process.env.CLIENT_URL,
+		failureRedirect: "/login/failed",
+	})
+);
 
 
-router.get('/logout', (req, res, next) => {
-    req.logout((error) => {
-        if (error) { return next(error) }
-        res.redirect('/')
-    });
-})
+
+router.get("/login/failed", (req, res) => {
+	res.status(401).json({
+		error: true,
+		message: "Log in failure",
+	});
+});
+
+
+router.get("/logout", (req, res) => {
+	req.logout();
+	res.redirect(process.env.CLIENT_URL);
+});
 
 module.exports = router

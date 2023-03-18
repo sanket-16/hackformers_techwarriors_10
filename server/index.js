@@ -5,6 +5,8 @@ const path = require('passport');
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
+const cookieSession = require("cookie-session");
+const passportSetup = require("./passport")
 
 const app = express();
 app.use(express.json());
@@ -12,23 +14,40 @@ app.use(cors());
 
 require('dotenv').config();
 //passport config
-require('./passport')(passport);
+// require('./passport')(passport);
 
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log('database connected'))
   .catch((e) => console.log(e.message));
+
+// app.use(
+//   session({
+//     secret: process.env.SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+//   })
+// );
+
 app.use(
-  session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
-  })
+	cookieSession({
+		name: "session",
+		keys: ["cyberwolve"],
+		maxAge: 24 * 60 * 60 * 100,
+	})
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(
+	cors({
+		origin: "http://127.0.0.1:5173",
+		hods: "GET,POST,PUT,DELETE",
+		credentials: true,
+	})
+);
 
 app.use('/', require('./src/routes/userRoutes'));
 
