@@ -6,12 +6,17 @@ const Navbar = () => {
   return (
     <nav className="w-full flex items-center justify-between py-8">
       <h1 className="font-bold text-2xl">
-        Uni<span className="text-blue">Link</span>
+        Uni<span className="text-blue"> Link</span>
       </h1>
       <ul className="font-medium flex items-center my-4 gap-4">
         <li>Search</li>
         <li>
-          <button className=" flex items-center gap-2 bg-blue rounded-md px-4 py-2">
+          <button
+            className=" flex items-center gap-2 bg-blue rounded-md px-4 py-2"
+            onClick={() => {
+              window.open('http://localhost:8080/google', '_self');
+            }}
+          >
             {isLogedIn ? (
               <div className="flex items-center gap-2">
                 <img src={react} alt="pfp" className="w-6" /> Name
