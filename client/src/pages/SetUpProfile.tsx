@@ -48,27 +48,27 @@ const socials: Array<Social> = [
   {
     id: '1',
     title: 'Github',
-    link: '',
+    url: '',
   },
   {
     id: '2',
     title: 'Linkedin',
-    link: '',
+    url: '',
   },
   {
     id: '3',
     title: 'LeetCode',
-    link: '',
+    url: '',
   },
   {
     id: '4',
     title: 'Behance',
-    link: '',
+    url: '',
   },
   {
     id: '5',
     title: 'Other',
-    link: '',
+    url: '',
   },
 ];
 
@@ -77,10 +77,10 @@ type DataType = {
   Links: [
     {
       title: string;
-      link: string;
+      url: string;
     }
   ];
-  Tags: [''];
+  Tags: [];
 };
 
 const fetchDetails = async () => {
@@ -132,8 +132,14 @@ const SetUpProfile = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        console.log();
-        mutate({ Tags: selectedTags, Links: selectedSocials, fullname: name });
+        console.log(e);
+        mutate({
+          Tags: selectedTags.map((tag) => tag.skill),
+          Links: selectedSocials.map((social) => {
+            social.title, social.url;
+          }),
+          fullname: name,
+        });
       }}
     >
       <div className="grid grid-cols-1  md:grid-cols-2 gap-4 w-full ">

@@ -2,86 +2,40 @@ import Tag from '@components/Tag';
 import Wrapper from '@hoc/Wrapper';
 import TagProps from '../types/TagProps';
 import { BsFillEyeFill, BsFillPencilFill } from 'react-icons/bs';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { FaUserAlt } from 'react-icons/fa';
 
-const tags: Array<TagProps> = [
-  {
-    id: '1',
-    techstack: 'Javascript',
-  },
-  {
-    id: '2',
-    techstack: 'Javascript',
-  },
-  {
-    id: '3',
-    techstack: 'Javascript',
-  },
-  {
-    id: '4',
-    techstack: 'Javascript',
-  },
-  {
-    id: '5',
-    techstack: 'Javascript',
-  },
-  {
-    id: '6',
-    techstack: 'Javascript',
-  },
-  {
-    id: '7',
-    techstack: 'Javascript',
-  },
-  {
-    id: '8',
-    techstack: 'Javascript',
-  },
-  {
-    id: '9',
-    techstack: 'Javascript',
-  },
-  {
-    id: '10',
-    techstack: 'Javascript',
-  },
-  {
-    id: '11',
-    techstack: 'Javascript',
-  },
-  {
-    id: '12',
-    techstack: 'Javascript',
-  },
-  {
-    id: '13',
-    techstack: 'Javascript',
-  },
-  {
-    id: '14',
-    techstack: 'Javascript',
-  },
-  {
-    id: '15',
-    techstack: 'Javascript',
-  },
-];
+const fetchDetails = async () => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    const user = await JSON.parse(atob(token.split('.')[1]));
+
+    const response = await axios.get(
+      `http://localhost:8080/api/byprofile/${user.userId}`
+    );
+    return response.data;
+  }
+};
 
 const UserProfilePage = () => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['user-details'],
+    queryFn: () => fetchDetails(),
+  });
+  if (isLoading) return <h3>Loading...</h3>;
+  if (error) return <h3>Error...</h3>;
   return (
     <div className="bg-almost-black flex  flex-col items-center text-white w-full">
       <div className="1 w-full flex flex-col justify-center items-center ">
-        <img
-          className="rounded-full w-24 "
-          src="https://avatars.githubusercontent.com/u/89473596?s=400&u=c88f8aa5296f46989495bb3b240a1582d27f0cee&v=4"
-          alt="img"
-        />
+        <FaUserAlt className="rounded-full border border-white p-2" size={80} />
 
-        <h1 className=" text-white text-3xl">Omkar Gurav</h1>
+        <h1 className=" text-white text-3xl">{data.fullName}</h1>
 
         <h3>MU | IT Engineering | 3rd Year </h3>
 
         <div className="flex flex-wrap justify-center gap-2 text-center mt-4  ">
-          {tags.map((tag) => (
+          {data.Tags.map((tag) => (
             <Tag key={tag.id} {...tag} />
           ))}
         </div>
@@ -101,38 +55,19 @@ const UserProfilePage = () => {
       <div className="2 flex flex-col justify-start w-full  ">
         <div className=" left-0 top-0">Link</div>
         <div className=" grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-6  items-center w-full ">
-          <div className="flex  bg-transparent  text-white font-semibold  py-2 px-2 text-center border hover:border-indigo-700  border-blue rounded-md  items-center">
-            <img
-              className="w-10 rounded-full mr-4 "
-              src="https://avatars.githubusercontent.com/u/64531568?v=4"
-              alt=""
-            />
-            <span>Check Out my github</span>
-          </div>
-          <div className="flex  bg-transparent  text-white font-semibold  py-2 px-2 text-center border hover:border-indigo-700  border-blue rounded-md  items-center">
-            <img
-              className="w-10 rounded-full mr-4 "
-              src="https://avatars.githubusercontent.com/u/64531568?v=4"
-              alt=""
-            />
-            <span>Check Out my github</span>
-          </div>
-          <div className="flex  bg-transparent  text-white font-semibold  py-2 px-2 text-center border hover:border-indigo-700  border-blue rounded-md  items-center">
-            <img
-              className="w-10 rounded-full mr-4 "
-              src="https://avatars.githubusercontent.com/u/64531568?v=4"
-              alt=""
-            />
-            <span>Check Out my github</span>
-          </div>
-          <div className="flex  bg-transparent  text-white font-semibold  py-2 px-2 text-center border hover:border-indigo-700  border-blue rounded-md  items-center">
-            <img
-              className="w-10 rounded-full mr-4 "
-              src="https://avatars.githubusercontent.com/u/64531568?v=4"
-              alt=""
-            />
-            <span>Check Out my github</span>
-          </div>
+          {data.Links.map((link) => {
+            <a
+              href={link.url}
+              className="flex  bg-transparent  text-white font-semibold  py-2 px-2 text-center border hover:border-indigo-700  border-blue rounded-md  items-center"
+            >
+              <img
+                className="w-10 rounded-full mr-4 "
+                src="https://avatars.githubusercontent.com/u/64531568?v=4"
+                alt=""
+              />
+              <span>{link.title}</span>
+            </a>;
+          })}
         </div>
       </div>
     </div>
