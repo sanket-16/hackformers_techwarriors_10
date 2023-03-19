@@ -5,6 +5,13 @@ import { useEffect } from 'react';
 
 const Wrapper = (Component: React.FC) =>
   function HOC() {
+    const token = localStorage.getItem('token');
+    useEffect(() => {
+      if (token) {
+        const user = JSON.parse(atob(token.split('.')[1]));
+        console.log(user);
+      }
+    }, []);
     // const { data, isLoading, error, refetch } = useQuery(['user'], () => {
     //   return axios.get('http://localhost:8080/google');
     // });
