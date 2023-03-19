@@ -21,4 +21,18 @@ const createProfile = async (req, res) => {
   console.log(req.body);
 };
 
+//    res.send(user);
+//    console.log(Links ,Tags, fullname);
+
 module.exports = { createProfile };
+
+const byTags = async (req, res) => {
+  const users = await User.find({ Tags: req.body.Tags });
+  res.send(users);
+};
+const byName = async (req, res) => {
+  const users = await User.find(req.body.fullname);
+  res.send(users);
+};
+
+module.exports = { createProfile, byTags, byName };
