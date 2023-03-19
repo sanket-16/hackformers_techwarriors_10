@@ -1,6 +1,5 @@
 import Navbar from '@components/Navbar';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
 
 const Wrapper = (Component: React.FC) =>
@@ -12,12 +11,11 @@ const Wrapper = (Component: React.FC) =>
         console.log(user);
       }
     }, []);
-    // const { data, isLoading, error, refetch } = useQuery(['user'], () => {
-    //   return axios.get('http://localhost:8080/google');
-    // });
+
     return (
       <section className="md:px-40 px-20 bg-almost-black text-white min-h-screen min-w-screen">
         <Navbar />
+        <Toaster />
         <Component />
       </section>
     );

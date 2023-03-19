@@ -1,80 +1,139 @@
+import { useState, useEffect } from 'react';
+import { FaUserAlt } from 'react-icons/fa';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import Tag from '@components/Tag';
 import Wrapper from '@hoc/Wrapper';
-import React from 'react';
 import TagProps from '../types/TagProps';
 import Social from '../types/Social';
 
-const tags: Array<TagProps> = [
-  {
-    id: '1',
-    techstack: 'Javascript',
-  },
-  {
-    id: '2',
-    techstack: 're',
-  },
-  {
-    id: '3',
-    techstack: 'dd',
-  },
-  {
-    id: '4',
-    techstack: 'ff',
-  },
-  {
-    id: '5',
-    techstack: 'aa',
-  },
-  {
-    id: '6',
-    techstack: 'Javascript',
-  },
-  {
-    id: '7',
-    techstack: 'Javascript',
-  },
-  {
-    id: '8',
-    techstack: 'Javascript',
-  },
-];
+// const tags: Array<TagProps> = [
+//   {
+//     id: '1',
+//     skill: 'Javascript',
+//   },
+//   {
+//     id: '2',
+//     skill: 're',
+//   },
+//   {
+//     id: '3',
+//     skill: 'dd',
+//   },
+//   {
+//     id: '4',
+//     skill: 'ff',
+//   },
+//   {
+//     id: '5',
+//     skill: 'aa',
+//   },
+//   {
+//     id: '6',
+//     skill: 'Javascript',
+//   },
+//   {
+//     id: '7',
+//     skill: 'Javascript',
+//   },
+//   {
+//     id: '8',
+//     skill: 'Javascript',
+//   },
+// ];
 
 const socials: Array<Social> = [
   {
     id: '1',
     title: 'Github',
-    link: 'http://',
+    link: '',
   },
   {
     id: '2',
-    title: 'snapchat',
-    link: 'http://',
+    title: 'Linkedin',
+    link: '',
   },
   {
     id: '3',
-    title: 'instagram',
-    link: 'http://',
+    title: 'LeetCode',
+    link: '',
   },
   {
     id: '4',
-    title: 'only fans',
-    link: 'http://',
+    title: 'Behance',
+    link: '',
+  },
+  {
+    id: '5',
+    title: 'Other',
+    link: '',
   },
 ];
 
+type DataType = {
+  fullname: string;
+  Links: [
+    {
+      title: string;
+      link: string;
+    }
+  ];
+  Tags: [''];
+};
+
+const fetchDetails = async () => {
+  const response = await axios.get('http://localhost:8080/tag');
+  return response.data;
+};
+
 const SetUpProfile = () => {
-  const [selectedTags, setSelectedTags] = React.useState<Array<TagProps>>([]);
-  const [selectedTag, setSelectedTag] = React.useState(tags[0].techstack);
-
-  const [selectedSocials, setSelectedSocials] = React.useState<Array<Social>>(
-    []
+  const navigate = useNavigate();
+  const [selectedTags, setSelectedTags] = useState<Array<TagProps>>([]);
+  const [selectedTag, setSelectedTag] = useState('');
+  const [name, setName] = useState('');
+  const [user, setUser] = useState('');
+  const [selectedSocials, setSelectedSocials] = useState<Array<Social>>([]);
+  const [selectedProfile, setSelectedProfile] = useState('');
+  const [color, setColor] = useState('white');
+  const token = localStorage.getItem('token');
+  useEffect(() => {
+    if (token) {
+      const user = JSON.parse(atob(token.split('.')[1]));
+      setUser(user.userId);
+    }
+  }, []);
+  let toastId: string;
+  const { data: tags, isLoading } = useQuery<Array<TagProps>>({
+    queryFn: fetchDetails,
+    queryKey: ['tags'],
+  });
+  const { mutate } = useMutation(
+    async (Data: DataType) =>
+      axios.patch(`http://localhost:8080/api/createProfile/${user}`, {
+        Data,
+      }),
+    {
+      onError: (error) => {
+        console.log(error);
+        toast.dismiss(toastId);
+        toast.error('Error Occured! Please try again..', { id: toastId });
+      },
+      onSuccess: (data) => {
+        console.log(data);
+        toast.dismiss(toastId);
+        toast.success('Added your account', { id: toastId });
+        // navigate('/login');
+      },
+    }
   );
-  const [selectedProfile, setSelectedProfile] = React.useState('');
-
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        console.log();
+        mutate({ Tags: selectedTags, Links: selectedSocials, fullname: name });
       }}
     >
       <div className="grid grid-cols-1  md:grid-cols-2 gap-4 w-full ">
@@ -83,20 +142,25 @@ const SetUpProfile = () => {
           <div className="flex gap-2  space-x-12 mt-6 ">
             <div>
               <p className=" text-white/50">Profile Picture :</p>
-              <img
-                className="w-16 rounded-full"
-                src="https://avatars.githubusercontent.com/u/64531568?v=4"
-                alt=""
+              <FaUserAlt
+                size={80}
+                className={`border border-${color} text-${color} rounded-full p-2 m-20`}
               />
             </div>
             <div>
               <p className=" text-white/50">Name :</p>
-              <h2 className="text-2xl ">Sanket Patil</h2>
+              <input
+                id={name}
+                className="rounded-md p-2 text-black"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
           </div>
 
           <div className="">
-            <h3 className=" text-white/50">Add Link</h3>
+            <h3 className=" text-white/50">Add Link:</h3>
 
             <div className="grid grid-cols-3 md:grid-cols-3 gap-2">
               {selectedSocials.map((social) => (
@@ -149,7 +213,7 @@ const SetUpProfile = () => {
         </div>
 
         <div>
-          <h3 className=" text-white/50">Add Link</h3>
+          <h3 className=" text-white/50">Add Skill: </h3>
           <div className="grid grid-cols-3 md:grid-cols-5 gap-2 my-4">
             {selectedTags.map((tag) => (
               <Tag key={tag.id} {...tag} />
@@ -163,21 +227,22 @@ const SetUpProfile = () => {
                 }
                 setSelectedTags((prevValue) => [
                   ...prevValue,
-                  tags.find((tag) => tag.techstack === e.target.value)!,
+                  tags.find((tag) => tag.skill === e.target.value),
                 ]);
               }}
               className=" h-fit text-sm bg-transparent  text-white font-semibold  py-2 px-2 mx-2 text-center border hover:border-indigo-700  border-blue   rounded-md "
             >
-              {tags.map((tag) => (
-                <option
-                  key={tag.id}
-                  onSelect={(e) => console.log(e)}
-                  className="bg-almost-black text-white  "
-                  value={tag.techstack}
-                >
-                  {tag.techstack}
-                </option>
-              ))}
+              {!isLoading &&
+                tags!.map((tag) => (
+                  <option
+                    key={tag._id}
+                    onSelect={(e) => console.log(e)}
+                    className="bg-almost-black text-white  "
+                    value={tag.skill}
+                  >
+                    {tag.skill}
+                  </option>
+                ))}
             </select>
           </div>
         </div>

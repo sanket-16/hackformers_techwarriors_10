@@ -1,12 +1,11 @@
-
 const User = require('../models/user');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-jwtSecret = "SHHH"
-const signup =async (req,res)=>{
-    const { username, password } = req.body;
+jwtSecret = 'SHHH';
+const signup = async (req, res) => {
+  const { username, password } = req.body.data;
 
-    // console.log(req.body)
+  // console.log(username, password);
 
   const existingUser = await User.findOne({ username });
 
@@ -21,27 +20,26 @@ const signup =async (req,res)=>{
   const token = jwt.sign({ userId: user._id }, jwtSecret);
 
   res.status(201).json({ message: 'User created', token });
-}
+};
 
-const signin = async(req,res)=>{
-    const { username, password } = req.body;
+const signin = async (req, res) => {
+  const { username, password } = req.body.data;
 
-    const user = await User.findOne({ username });
-  
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' });
-    }
-  
-    const isMatch = await user.comparePassword(password);
-  
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid username or password' });
-    }
-  
-    const token = jwt.sign({ userId: user._id }, jwtSecret);
-  
-    res.json({ message: 'Signed in successfully', token });
-  
-}
+  const user = await User.findOne({ username });
 
-module.exports = {signin,signup};
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid username or password' });
+  }
+
+  const isMatch = await user.comparePassword(password);
+
+  if (!isMatch) {
+    return res.status(401).json({ message: 'Invalid username or password' });
+  }
+
+  const token = jwt.sign({ userId: user._id }, jwtSecret);
+
+  res.json({ message: 'Signed in successfully', token });
+};
+
+module.exports = { signin, signup };
