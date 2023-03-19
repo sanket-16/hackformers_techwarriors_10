@@ -9,10 +9,10 @@ const createProfile = async (req,res)=>{
     Links : Links,
     Tags: Tags,
     fullName:fullname
-}}, {upsert: true}).exec()
+}}).exec()
   user.save();
  
-//    res.send(user);
+   res.send(user);
 //    console.log(Links ,Tags, fullname);
 
 
