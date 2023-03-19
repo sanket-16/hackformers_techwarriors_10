@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path')
+const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -16,7 +16,7 @@ mongoose
   });
 
 app.listen(process.env.PORT, () => console.log('server is running on 8080'));
-const authRoutes = require('./src/routes/userRoutes')
-app.use('/api',authRoutes);
+const authRoutes = require('./src/routes/userRoutes');
+app.use('/api', authRoutes);
 
-app.use('/', require('./src/routes/tagRoutes'))
+app.use('/', require('./src/routes/tagRoutes'));
