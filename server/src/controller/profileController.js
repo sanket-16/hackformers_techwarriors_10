@@ -26,14 +26,16 @@ const byProfile = async (req, res) => {
   res.send(user);
 };
 
-const byTags = async (req, res) => {
-  const users = await User.find({ Tags: req.body.Tags });
-  res.send(users);
-};
-const byName = async (req, res) => {
-  console.log(req.body);
-  const users = await User.find(req.body.fullname);
-  res.send(users);
-};
+const byTags = async (req,res) =>{
 
-module.exports = { createProfile, byTags, byName, byProfile };
+    const users = await User.find({Tags:req.body.Tags});
+    res.send(users);
+
+}
+const byName = async (req,res) =>{
+
+    console.log(req.body)
+    const users = await User.find({fullName:req.body.fullName}).catch((e)=>console.log(e.message));
+    res.send(users);
+   
+}
