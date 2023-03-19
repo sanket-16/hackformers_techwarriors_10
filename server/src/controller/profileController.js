@@ -18,6 +18,11 @@ const createProfile = async (req,res)=>{
 
 }
 
+const byProfile = async (req,res)=>{
+    const user =await  User.findById(req.params.id);
+    res.send(user);
+}
+
 const byTags = async (req,res) =>{
 
     const users = await User.find({Tags:req.body.Tags});
@@ -31,4 +36,4 @@ const byName = async (req,res) =>{
 
 }
 
-module.exports = {createProfile,byTags,byName}
+module.exports = {createProfile,byTags,byName,byProfile}
