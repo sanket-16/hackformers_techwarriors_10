@@ -3,113 +3,104 @@ import SearchCardProps from '../types/SearchCardProps';
 import { AiOutlineSearch } from 'react-icons/ai';
 import SearchCard from '@components/SearchCard';
 import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
 import TagProps from '../types/TagProps';
 import Tag from '@components/Tag';
 
-const profiles: Array<SearchCardProps> = [
-  {
-    googleId: '1',
-    name: 'Gurav Dada',
-    bio: 'Hi hUIiIiIi',
-    image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-  },
-  {
-    googleId: '2',
-    name: 'Gurav Dada',
-    bio: 'Hi hUIiIiIi',
-    image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-  },
-  {
-    googleId: '3',
-    name: 'Gurav Dada',
-    bio: 'Hi hUIiIiIi',
-    image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-  },
-  {
-    googleId: '4',
-    name: 'Gurav Dada',
-    bio: 'Hi hUIiIiIi',
-    image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-  },
-  {
-    googleId: '5',
-    name: 'Gurav Dada',
-    bio: 'Hi hUIiIiIi',
-    image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-  },
-  {
-    googleId: '6',
-    name: 'Gurav Dada',
-    bio: 'Hi hUIiIiIi',
-    image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-  },
-];
+// const profiles: Array<SearchCardProps> = [
+//   {
+//     googleId: '1',
+//     name: 'Gurav Dada',
+//     bio: 'Hi hUIiIiIi',
+//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
+//   },
+//   {
+//     googleId: '2',
+//     name: 'Gurav Dada',
+//     bio: 'Hi hUIiIiIi',
+//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
+//   },
+//   {
+//     googleId: '3',
+//     name: 'Gurav Dada',
+//     bio: 'Hi hUIiIiIi',
+//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
+//   },
+//   {
+//     googleId: '4',
+//     name: 'Gurav Dada',
+//     bio: 'Hi hUIiIiIi',
+//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
+//   },
+//   {
+//     googleId: '5',
+//     name: 'Gurav Dada',
+//     bio: 'Hi hUIiIiIi',
+//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
+//   },
+//   {
+//     googleId: '6',
+//     name: 'Gurav Dada',
+//     bio: 'Hi hUIiIiIi',
+//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
+//   },
+// ];
 
-const tags: Array<TagProps> = [
+// const fetchDetails = async (search: string) => {
+//   const response = await axios.get('http://localhost:8080/api/byname', {
+//     fullname: search,
+//   });
+//   return response.data;
+// };
+
+const tags = [
   {
-    id: '1',
-    techstack: 'Javascript',
+    _id: '1',
+    skill: 'Javascript',
   },
   {
-    id: '2',
-    techstack: 'Javascript',
+    _id: '2',
+    skill: 'Markdown',
   },
   {
-    id: '3',
-    techstack: 'Javascript',
+    _id: '3',
+    skill: 'React',
   },
   {
-    id: '4',
-    techstack: 'Javascript',
-  },
-  {
-    id: '5',
-    techstack: 'Javascript',
-  },
-  {
-    id: '6',
-    techstack: 'Javascript',
-  },
-  {
-    id: '7',
-    techstack: 'Javascript',
-  },
-  {
-    id: '8',
-    techstack: 'Javascript',
-  },
-  {
-    id: '9',
-    techstack: 'Javascript',
-  },
-  {
-    id: '10',
-    techstack: 'Javascript',
-  },
-  {
-    id: '11',
-    techstack: 'Javascript',
-  },
-  {
-    id: '12',
-    techstack: 'Javascript',
-  },
-  {
-    id: '13',
-    techstack: 'Javascript',
-  },
-  {
-    id: '14',
-    techstack: 'Javascript',
-  },
-  {
-    id: '15',
-    techstack: 'Javascript',
+    _id: '4',
+    skill: 'Graphic Designer',
   },
 ];
 
 const SearchPage = () => {
   const [search, setSearch] = useState('');
+  const [data, setData] = useState([]);
+  // const { data, isLoading, error, refetch } = useQuery({
+  //   queryKey: ['users'],
+  //   queryFn: () => fetchDetails(search),
+  // });
+  // const queryClient = useQueryClient();
+  let toastId: string;
+  const { mutate } = useMutation(
+    async (data: string) =>
+      axios.post('http://localhost:8080/api/bytag', { Tags: data }),
+    {
+      onError: (error) => {
+        console.log(error);
+        toast.dismiss(toastId);
+        toast.error('Error Occured! Please try again..', { id: toastId });
+      },
+      onSuccess: (receivedData) => {
+        setData((prevValue) => prevValue.push(receivedData));
+        console.log(data);
+        toast.dismiss(toastId);
+        toast.success('Added your account', { id: toastId });
+      },
+    }
+  );
+  // if (isLoading) return <h1>Loading...</h1>;
   return (
     <div className="w-full">
       <div className="flex-col gap-4">
@@ -122,7 +113,11 @@ const SearchPage = () => {
             value={search}
             className="bg-transparent border border-white rounded-md px-2 py-4 flex flex-1"
             placeholder="Type to search"
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              // console.log(data);
+              // queryClient.invalidateQueries(['users']);
+            }}
           />
           <AiOutlineSearch size={40} />
         </div>
@@ -131,14 +126,21 @@ const SearchPage = () => {
         <h3 className="font-semibold text-xl mb-4">Tags</h3>
         <div className="flex overflow-y-scroll">
           {tags.map((tag) => (
-            <Tag key={tag.id} {...tag} />
+            <div
+              onClick={(event) => {
+                mutate(tag.skill);
+              }}
+              className=" text-sm bg-transparent  text-white font-semibold  py-2 px-2 mx-2 text-center border hover:border-indigo-700  border-blue   rounded-md h-fit  "
+            >
+              {tag.skill}
+            </div>
           ))}
         </div>
       </div>
       <h3 className="font-semibold text-xl mb-4">Search Results...</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {profiles.map((profile) => (
-          <SearchCard key={profile.googleId} {...profile} />
+        {data.map((profile) => (
+          <SearchCard key={profile._id} fullName={profile.fullName} />
         ))}
       </div>
     </div>
