@@ -13,7 +13,7 @@ mongoose
   .then(() => console.log('Database Connected'))
   .catch((e) => {
     e.message;
-  }());
+  });
 
 app.listen(process.env.PORT, () => console.log('server is running on 8080'));
 const authRoutes = require('./src/routes/userRoutes')

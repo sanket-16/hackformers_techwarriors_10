@@ -1,5 +1,6 @@
 const User = require("../models/user")
 
+
 const createProfile = async (req,res)=>{
     // JSON.stringify(req.body)
     const{Links,Tags,fullname} = req.body;
@@ -11,10 +12,23 @@ const createProfile = async (req,res)=>{
 }}, {upsert: true}).exec()
   user.save();
  
-   res.send(user);
-   console.log(Links ,Tags, fullname);
+//    res.send(user);
+//    console.log(Links ,Tags, fullname);
 
 
 }
 
-module.exports = {createProfile}
+const byTags = async (req,res) =>{
+
+    const users = await User.find({Tags:req.body.Tags});
+    res.send(users);
+
+}
+const byName = async (req,res) =>{
+
+    const users = await User.find(req.body.fullname);
+    res.send(users);
+
+}
+
+module.exports = {createProfile,byTags,byName}

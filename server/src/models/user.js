@@ -17,7 +17,9 @@ const userSchema = new mongoose.Schema({
     title:String,
     url:String
   }],
-  Tags:[String] ,
+  Tags:[{
+    
+  }] ,
   fullName:String
 },{timestamps:true});
 
