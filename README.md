@@ -22,6 +22,9 @@ UniLink is a web-based tool that simplifies the process of sharing multiple reso
 * [Nikhil Chavan](https://github.com/nikhil3113)
 
 ## Screenshots -
+![image](https://user-images.githubusercontent.com/64531568/226159489-18de6c75-61f9-4c64-951a-38d66c3fbf7f.png)
+![image](https://user-images.githubusercontent.com/64531568/226159497-8089be00-e031-4338-8140-08695f9b0e9a.png)
+![image](https://user-images.githubusercontent.com/64531568/226159510-b5a9bbf5-6451-4613-ac06-e782939401ab.png)
 
 
 
