@@ -1,7 +1,13 @@
 import Tag from '@components/Tag';
 import Wrapper from '@hoc/Wrapper';
 import TagProps from '../types/TagProps';
+import { Link } from 'react-router-dom';
 import { BsFillEyeFill, BsFillPencilFill } from 'react-icons/bs';
+import {
+  AiFillGithub,
+  AiFillLinkedin,
+  AiFillTwitterCircle,
+} from 'react-icons/ai';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { FaUserAlt } from 'react-icons/fa';
@@ -17,6 +23,20 @@ const fetchDetails = async () => {
     return response.data;
   }
 };
+
+const socials = [
+  { url: 'https://github.com/sanket-16', title: 'Github', icon: AiFillGithub },
+  {
+    url: 'https://www.linkedin.com/in/sanket-patil-1b3299205/',
+    title: 'LinkedIn',
+    icon: AiFillLinkedin,
+  },
+  {
+    url: 'https://twitter.com/trpcio',
+    title: 'Twitter',
+    icon: AiFillTwitterCircle,
+  },
+];
 
 const UserProfilePage = () => {
   const { data, isLoading, error, refetch } = useQuery({
@@ -35,9 +55,11 @@ const UserProfilePage = () => {
         <h3>MU | IT Engineering | 3rd Year </h3>
 
         <div className="flex flex-wrap justify-center gap-2 text-center mt-4  ">
-          {data.Tags.map((tag) => (
-            <Tag key={tag.id} {...tag} />
-          ))}
+          {['Javascript', 'Python', 'Software Developer'].map(
+            (skill, index) => (
+              <Tag key={index} skill={skill} />
+            )
+          )}
         </div>
 
         <span className="flex gap-2 items-center text-sm text-white font-semibold  py-1 px-4 text-center  bg-blue rounded-md my-8 ">
@@ -46,28 +68,26 @@ const UserProfilePage = () => {
           20 Profile Views
         </span>
 
-        <button className="flex items-center gap-2 text-sm bg-transparent  text-white font-semibold  py-2 px-4 mx-2 text-center border hover:border-indigo-700  border-blue rounded-md mt-4">
-          <BsFillPencilFill />
-          Edit Profile
-        </button>
+        <Link to="/updateprofile">
+          <button className="flex items-center gap-2 text-sm bg-transparent  text-white font-semibold  py-2 px-4 mx-2 text-center border hover:border-indigo-700  border-blue rounded-md mt-4">
+            <BsFillPencilFill />
+            Edit Profile
+          </button>
+        </Link>
       </div>
 
       <div className="2 flex flex-col justify-start w-full  ">
         <div className=" left-0 top-0">Link</div>
         <div className=" grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-6  items-center w-full ">
-          {data.Links.map((link) => {
+          {socials.map((link) => (
             <a
               href={link.url}
               className="flex  bg-transparent  text-white font-semibold  py-2 px-2 text-center border hover:border-indigo-700  border-blue rounded-md  items-center"
             >
-              <img
-                className="w-10 rounded-full mr-4 "
-                src="https://avatars.githubusercontent.com/u/64531568?v=4"
-                alt=""
-              />
+              <link.icon className=" rounded-full mr-4 " size={40} />
               <span>{link.title}</span>
-            </a>;
-          })}
+            </a>
+          ))}
         </div>
       </div>
     </div>

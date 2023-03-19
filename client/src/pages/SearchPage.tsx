@@ -9,51 +9,45 @@ import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
 import TagProps from '../types/TagProps';
 import Tag from '@components/Tag';
 
-// const profiles: Array<SearchCardProps> = [
-//   {
-//     googleId: '1',
-//     name: 'Gurav Dada',
-//     bio: 'Hi hUIiIiIi',
-//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-//   },
-//   {
-//     googleId: '2',
-//     name: 'Gurav Dada',
-//     bio: 'Hi hUIiIiIi',
-//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-//   },
-//   {
-//     googleId: '3',
-//     name: 'Gurav Dada',
-//     bio: 'Hi hUIiIiIi',
-//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-//   },
-//   {
-//     googleId: '4',
-//     name: 'Gurav Dada',
-//     bio: 'Hi hUIiIiIi',
-//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-//   },
-//   {
-//     googleId: '5',
-//     name: 'Gurav Dada',
-//     bio: 'Hi hUIiIiIi',
-//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-//   },
-//   {
-//     googleId: '6',
-//     name: 'Gurav Dada',
-//     bio: 'Hi hUIiIiIi',
-//     image: 'https://avatars.githubusercontent.com/u/89473596?v=4',
-//   },
-// ];
+const profiles = [
+  {
+    _id: '1',
+    fullname: 'Bhushan Pawar',
+    bio: 'Cool Boi',
+  },
+  {
+    _id: '2',
+    fullname: 'Nikhil Chavan',
+    bio: 'Very Good Boy.',
+  },
+  {
+    _id: '3',
+    fullname: 'Sanket Patil',
+    bio: 'Nice bio.',
+  },
+  {
+    _id: '4',
+    fullname: 'Abhishek Thorat',
+    bio: 'Sup.',
+  },
+  {
+    _id: '5',
+    fullname: 'Omkar Gurav',
+    bio: 'Handsome boi',
+  },
+  {
+    _id: '6',
+    fullname: 'Prithviraj Mane',
+    bio: 'Hi hUIiIiIi',
+  },
+];
 
-// const fetchDetails = async (search: string) => {
-//   const response = await axios.get('http://localhost:8080/api/byname', {
-//     fullname: search,
-//   });
-//   return response.data;
-// };
+const fetchDetails = async (search: string) => {
+  const response = await axios.get('http://localhost:8080/api/byname', {
+    fullname: search,
+  });
+  return response.data;
+};
 
 const tags = [
   {
@@ -83,23 +77,23 @@ const SearchPage = () => {
   // });
   // const queryClient = useQueryClient();
   let toastId: string;
-  const { mutate } = useMutation(
-    async (data: string) =>
-      axios.post('http://localhost:8080/api/bytag', { Tags: data }),
-    {
-      onError: (error) => {
-        console.log(error);
-        toast.dismiss(toastId);
-        toast.error('Error Occured! Please try again..', { id: toastId });
-      },
-      onSuccess: (receivedData) => {
-        setData((prevValue) => prevValue.push(receivedData));
-        console.log(data);
-        toast.dismiss(toastId);
-        toast.success('Added your account', { id: toastId });
-      },
-    }
-  );
+  // const { mutate } = useMutation(
+  //   async (data: string) =>
+  //     axios.post('http://localhost:8080/api/bytag', { Tags: data }),
+  //   {
+  //     onError: (error) => {
+  //       console.log(error);
+  //       toast.dismiss(toastId);
+  //       toast.error('Error Occured! Please try again..', { id: toastId });
+  //     },
+  //     onSuccess: (receivedData) => {
+  //       // setData((prevValue) => prevValue.push(receivedData));
+  //       console.log(data);
+  //       toast.dismiss(toastId);
+  //       toast.success('Added your account', { id: toastId });
+  //     },
+  //   }
+  // );
   // if (isLoading) return <h1>Loading...</h1>;
   return (
     <div className="w-full">
@@ -124,11 +118,11 @@ const SearchPage = () => {
       </div>
       <div className="my-8">
         <h3 className="font-semibold text-xl mb-4">Tags</h3>
-        <div className="flex overflow-y-scroll">
+        <div className="flex  ">
           {tags.map((tag) => (
             <div
               onClick={(event) => {
-                mutate(tag.skill);
+                // mutate(tag.skill);
               }}
               className=" text-sm bg-transparent  text-white font-semibold  py-2 px-2 mx-2 text-center border hover:border-indigo-700  border-blue   rounded-md h-fit  "
             >
@@ -139,8 +133,12 @@ const SearchPage = () => {
       </div>
       <h3 className="font-semibold text-xl mb-4">Search Results...</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {data.map((profile) => (
-          <SearchCard key={profile._id} fullName={profile.fullName} />
+        {profiles.map((profile) => (
+          <SearchCard
+            key={profile._id}
+            fullname={profile.fullname}
+            bio={profile.bio}
+          />
         ))}
       </div>
     </div>
