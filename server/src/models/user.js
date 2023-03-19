@@ -18,8 +18,10 @@ const userSchema = new mongoose.Schema({
     url:String
   }],
   Tags:[{
-    
+
   }] ,
+  Bio : String,
+  profile_views:Number,
   fullName:String
 },{timestamps:true});
 
