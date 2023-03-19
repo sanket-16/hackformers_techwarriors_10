@@ -17,9 +17,7 @@ const userSchema = new mongoose.Schema({
     title:String,
     url:String
   }],
-  Tags:[{
-
-  }] ,
+  Tags:[String] ,
   Bio : String,
   profile_views:Number,
   fullName:String
