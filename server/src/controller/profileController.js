@@ -12,8 +12,7 @@ const createProfile = async (req, res) => {
         Tags: Tags,
         fullName: fullname,
       },
-    },
-    { upsert: true }
+    }
   ).exec();
   user.save();
 
@@ -39,3 +38,5 @@ const byName = async (req,res) =>{
     res.send(users);
    
 }
+
+module.exports = {byProfile,byName,byProfile,createProfile,byTags}
