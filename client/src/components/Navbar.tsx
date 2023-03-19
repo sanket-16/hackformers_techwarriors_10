@@ -19,14 +19,18 @@ const fetchDetails = async () => {
 
 const Navbar = () => {
   const token = localStorage.getItem('token');
-  const user = JSON.parse(atob(token.split('.')[1]));
+  if (token) {
+    const user = JSON.parse(atob(token.split('.')[1]));
+
+  }
+  
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['userrr'],
     queryFn: () => fetchDetails(),
   });
-  if (isLoading) return 'Loading...';
-  if (error) return 'Error...';
+  // if (isLoading) return 'Loading...';
+  // if (error) return 'Error...';
   return (
     <nav className="w-full flex items-center justify-between py-8">
       <h1 className="font-bold text-2xl">
@@ -37,9 +41,9 @@ const Navbar = () => {
           <Link to="/search">Search</Link>
         </li>
         <li>
-          <Link to={user !== '' || undefined ? '/user' : '/login'}>
+          <Link to={token !== '' || undefined ? '/user' : '/login'}>
             <button className=" flex items-center gap-2 bg-blue rounded-md px-4 py-2">
-              {user !== '' || undefined ? (
+              {token !== '' || undefined ? (
                 <div className="flex items-center gap-2">
                   <FaUserAlt /> {data.fullName}
                 </div>
